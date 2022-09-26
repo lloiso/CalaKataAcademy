@@ -4,15 +4,13 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        System.out.println(56 % 10);
-        String input = "x - i";
-        String input2 = "x - x";
-//        Scanner scanner = new Scanner(System.in);
-//        input = scanner.nextLine();
+        String input;
+        Scanner scanner = new Scanner(System.in);
+        input = scanner.nextLine();
 
 
         try {
-            System.out.println(calc(input2));
+            System.out.println(calc(input));
         } catch (MoreTenNumber e) {
             e.printStackTrace();
         } catch (ArithmeticException e) {
@@ -24,28 +22,17 @@ public class Main {
         }
 
 
-//        scanner.close();
-
-
-//        for (int i = 1; i < 101; i++) {
-//            String tmp = Integer.toString(i);
-//            System.out.println(handlerArabianNumberToRomeNumber(tmp) + " " + i);
-//        }
-
-//        System.out.println(handlerRomeNumberToArabianNumber("I"));
-//        System.out.println(handlerRomeNumberToArabianNumber("II"));
-//        System.out.println(handlerRomeNumberToArabianNumber("III"));
-//        System.out.println(handlerRomeNumberToArabianNumber("IV"));
-//        System.out.println(handlerRomeNumberToArabianNumber("V"));
-//        System.out.println(handlerRomeNumberToArabianNumber("VI"));
-//        System.out.println(handlerRomeNumberToArabianNumber("VII"));
-//        System.out.println(handlerRomeNumberToArabianNumber("VIII"));
-//        System.out.println(handlerRomeNumberToArabianNumber("IX"));
-//        System.out.println(handlerRomeNumberToArabianNumber("X"));
+        scanner.close();
     }
 
     public static String calc(String input) throws Exception {
         String[] tmp = input.split(" ");
+        if (tmp.length < 3){
+            throw new Exception("строка не является математической операцией");
+        }
+        if (tmp.length > 3){
+            throw new Exception("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+        }
         String out = null;
 
         switch (checkNum(tmp[0]) + checkNum(tmp[2])) {
@@ -58,36 +45,6 @@ public class Main {
                 out = romanianCalc(input);
                 break;
         }
-
-//        int a, b, result = 0;
-//        String operator;
-//        a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
-//        operator = (tmp[1]);
-//        b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
-//
-//        System.out.println(checkNum(tmp[0]));
-//        System.out.println(checkNum(tmp[2]));
-//
-//        if (a > 10 || b > 10) {
-//            throw new MoreTenNumber("введено значение больше 10");
-//        } else {
-//
-//            switch (operator) {
-//                case "+":
-//                    result = a + b;
-//                    break;
-//                case "-":
-//                    result = a - b;
-//                    break;
-//                case "*":
-//                    result = a * b;
-//                    break;
-//                case "/":
-//                    result = a / b;
-//                    break;
-//            }
-//            return handlerArabianNumberToRomeNumber(Integer.toString(result));
-//        }
         return out;
     }
 
@@ -112,9 +69,6 @@ public class Main {
         a = Integer.parseInt(tmp[0]);
         operator = (tmp[1]);
         b = Integer.parseInt(tmp[2]);
-
-        System.out.println("arab " + checkNum(tmp[0]));
-        System.out.println("arab " + checkNum(tmp[2]));
 
         if (a > 10 || b > 10) {
             throw new MoreTenNumber("введено значение больше 10");
@@ -147,9 +101,6 @@ public class Main {
         a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
         operator = (tmp[1]);
         b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
-
-        System.out.println("roman " + checkNum(tmp[0]));
-        System.out.println("roman " + checkNum(tmp[2]));
 
         if (a > 10 || b > 10) {
             throw new MoreTenNumber("введено значение больше 10");
