@@ -1,51 +1,73 @@
+import java.io.IOException;
+import java.util.Locale;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println(56 % 10);
-        String as = "8 / 2";
+//        System.out.println(56 % 10);
+        String input = "x - i";
+        Scanner scanner = new Scanner(System.in);
+        input = scanner.nextLine();
 
-//        calc(as);
-        System.out.println(calc(as));
-        for (int i = 1; i < 99; i++) {
-            String tmp = Integer.toString(i);
-            System.out.println(handlerArabianNumberToRomeNumber(tmp) + " " + i);
+
+        try {
+            System.out.println(calc(input));
+        } catch (MoreTenNumber e) {
+            System.out.println("fuck");
         }
 
-        System.out.println(handlerRomeNumberToArabianNumber("I"));
-        System.out.println(handlerRomeNumberToArabianNumber("II"));
-        System.out.println(handlerRomeNumberToArabianNumber("III"));
-        System.out.println(handlerRomeNumberToArabianNumber("IV"));
-        System.out.println(handlerRomeNumberToArabianNumber("V"));
-        System.out.println(handlerRomeNumberToArabianNumber("VI"));
-        System.out.println(handlerRomeNumberToArabianNumber("VII"));
-        System.out.println(handlerRomeNumberToArabianNumber("VIII"));
-        System.out.println(handlerRomeNumberToArabianNumber("IX"));
-        System.out.println(handlerRomeNumberToArabianNumber("X"));
+
+        scanner.close();
+
+
+//        for (int i = 1; i < 101; i++) {
+//            String tmp = Integer.toString(i);
+//            System.out.println(handlerArabianNumberToRomeNumber(tmp) + " " + i);
+//        }
+
+//        System.out.println(handlerRomeNumberToArabianNumber("I"));
+//        System.out.println(handlerRomeNumberToArabianNumber("II"));
+//        System.out.println(handlerRomeNumberToArabianNumber("III"));
+//        System.out.println(handlerRomeNumberToArabianNumber("IV"));
+//        System.out.println(handlerRomeNumberToArabianNumber("V"));
+//        System.out.println(handlerRomeNumberToArabianNumber("VI"));
+//        System.out.println(handlerRomeNumberToArabianNumber("VII"));
+//        System.out.println(handlerRomeNumberToArabianNumber("VIII"));
+//        System.out.println(handlerRomeNumberToArabianNumber("IX"));
+//        System.out.println(handlerRomeNumberToArabianNumber("X"));
     }
 
-    public static String calc(String input) {
+    public static String calc(String input) throws MoreTenNumber {
         int a, b, result = 0;
-        String operand;
+        String operator;
         String[] tmp = input.split(" ");
+        a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
+        operator = (tmp[1]);
+        b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
 
-        a = Integer.parseInt(tmp[0]);
-        operand = (tmp[1]);
-        b = Integer.parseInt(tmp[2]);
+        System.out.println(a);
+        System.out.println(b);
 
-        switch (operand) {
-            case "+":
-                result = a + b;
-                break;
-            case "-":
-                result = a - b;
-                break;
-            case "*":
-                result = a * b;
-                break;
-            case "/":
-                result = a / b;
-                break;
+        if (a > 10 || b > 10) {
+            throw new MoreTenNumber("введено значение больше 10");
+        } else {
+
+            switch (operator) {
+                case "+":
+                    result = a + b;
+                    break;
+                case "-":
+                    result = a - b;
+                    break;
+                case "*":
+                    result = a * b;
+                    break;
+                case "/":
+                    result = a / b;
+                    break;
+            }
+            return handlerArabianNumberToRomeNumber(Integer.toString(result));
         }
-        return Integer.toString(result);
     }
 
     public static String handlerArabianNumberToRomeNumber(String incoming) {
@@ -70,8 +92,9 @@ public class Main {
         } else if (decimalNum == 9) {
             romeDecimalNum = "X";
             romeDecimalNum = romeDecimalNum + "C";
+        } else if (decimalNum == 10) {
+            romeDecimalNum = "С";
         }
-
 
         if (num > 0 && num < 4) {
             romeNum = "I";
@@ -95,6 +118,7 @@ public class Main {
 
     public static String handlerRomeNumberToArabianNumber(String incoming) {
         int result = 0;
+        incoming = incoming.toUpperCase();
 
         switch (incoming.charAt(0)) {
             case 'I':
@@ -120,6 +144,12 @@ public class Main {
             case 'X':
                 result = 10;
                 break;
+//            default:
+//                try {
+//                    throw new IOException();
+//                } catch (IOException e) {
+//                    System.out.println("not roman num");
+//                }
         }
         return Integer.toString(result);
     }
