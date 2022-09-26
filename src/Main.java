@@ -6,18 +6,19 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println(56 % 10);
         String input = "x - i";
-        Scanner scanner = new Scanner(System.in);
-        input = scanner.nextLine();
+        String input2 = "xx - xi";
+//        Scanner scanner = new Scanner(System.in);
+//        input = scanner.nextLine();
 
 
         try {
-            System.out.println(calc(input));
+            System.out.println(calc(input2));
         } catch (MoreTenNumber e) {
-            System.out.println("fuck");
+            e.printStackTrace();
         }
 
 
-        scanner.close();
+//        scanner.close();
 
 
 //        for (int i = 1; i < 101; i++) {
@@ -69,6 +70,18 @@ public class Main {
             return handlerArabianNumberToRomeNumber(Integer.toString(result));
         }
     }
+
+    public static int checkNum(String checkStr){
+        int a = Integer.parseInt(checkStr);
+
+        return 0;
+    }
+//    public static String arabianCalc(String input){
+//
+//    }
+//    public static String romanianCalc(String input){
+//
+//    }
 
     public static String handlerArabianNumberToRomeNumber(String incoming) {
         String romeNum = "";
@@ -143,6 +156,15 @@ public class Main {
                 break;
             case 'X':
                 result = 10;
+                for (int i = 1; i < incoming.length(); i++) {
+                    if (incoming.charAt(i) == 'I') {
+                        result++;
+                    } else if (incoming.charAt(i) == 'V') {
+                        result = 15;
+                    } else if (incoming.charAt(i) == 'X') {
+                        result = 20;
+                    }
+                }
                 break;
 //            default:
 //                try {
