@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
 //        System.out.println(56 % 10);
         String input = "x - i";
-        String input2 = "xx - xi";
+        String input2 = "x - x";
 //        Scanner scanner = new Scanner(System.in);
 //        input = scanner.nextLine();
 
@@ -14,6 +14,12 @@ public class Main {
         try {
             System.out.println(calc(input2));
         } catch (MoreTenNumber e) {
+            e.printStackTrace();
+        } catch (ArithmeticException e) {
+            System.out.println("деление на 0");
+        } catch (LessOneNumException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -38,16 +44,77 @@ public class Main {
 //        System.out.println(handlerRomeNumberToArabianNumber("X"));
     }
 
-    public static String calc(String input) throws MoreTenNumber {
+    public static String calc(String input) throws Exception {
+        String[] tmp = input.split(" ");
+        String out = null;
+
+        switch (checkNum(tmp[0]) + checkNum(tmp[2])) {
+            case 0:
+                out = arabianCalc(input);
+                break;
+            case 1:
+                throw new Exception("используются одновременно разные системы счисления");
+            case 2:
+                out = romanianCalc(input);
+                break;
+        }
+
+//        int a, b, result = 0;
+//        String operator;
+//        a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
+//        operator = (tmp[1]);
+//        b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
+//
+//        System.out.println(checkNum(tmp[0]));
+//        System.out.println(checkNum(tmp[2]));
+//
+//        if (a > 10 || b > 10) {
+//            throw new MoreTenNumber("введено значение больше 10");
+//        } else {
+//
+//            switch (operator) {
+//                case "+":
+//                    result = a + b;
+//                    break;
+//                case "-":
+//                    result = a - b;
+//                    break;
+//                case "*":
+//                    result = a * b;
+//                    break;
+//                case "/":
+//                    result = a / b;
+//                    break;
+//            }
+//            return handlerArabianNumberToRomeNumber(Integer.toString(result));
+//        }
+        return out;
+    }
+
+    public static int checkNum(String checkStr) {
+        int a = 0;
+        checkStr = checkStr.toUpperCase();
+
+        for (int i = 0; i < checkStr.length(); i++) {
+            char ch = checkStr.charAt(i);
+            if (ch == 'I' || ch == 'V' || ch == 'X') {
+                a = 1;
+            }
+        }
+        return a;
+    }
+
+
+    public static String arabianCalc(String input) throws MoreTenNumber, ArithmeticException {
         int a, b, result = 0;
         String operator;
         String[] tmp = input.split(" ");
-        a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
+        a = Integer.parseInt(tmp[0]);
         operator = (tmp[1]);
-        b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
+        b = Integer.parseInt(tmp[2]);
 
-        System.out.println(a);
-        System.out.println(b);
+        System.out.println("arab " + checkNum(tmp[0]));
+        System.out.println("arab " + checkNum(tmp[2]));
 
         if (a > 10 || b > 10) {
             throw new MoreTenNumber("введено значение больше 10");
@@ -67,21 +134,49 @@ public class Main {
                     result = a / b;
                     break;
             }
-            return handlerArabianNumberToRomeNumber(Integer.toString(result));
+            return Integer.toString(result);
         }
+
     }
 
-    public static int checkNum(String checkStr){
-        int a = Integer.parseInt(checkStr);
+    public static String romanianCalc(String input) throws MoreTenNumber, LessOneNumException {
+        int a, b, result = 0;
+        String out = null;
+        String operator;
+        String[] tmp = input.split(" ");
+        a = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[0]));
+        operator = (tmp[1]);
+        b = Integer.parseInt(handlerRomeNumberToArabianNumber(tmp[2]));
 
-        return 0;
+        System.out.println("roman " + checkNum(tmp[0]));
+        System.out.println("roman " + checkNum(tmp[2]));
+
+        if (a > 10 || b > 10) {
+            throw new MoreTenNumber("введено значение больше 10");
+        } else {
+
+            switch (operator) {
+                case "+":
+                    result = a + b;
+                    break;
+                case "-":
+                    result = a - b;
+                    break;
+                case "*":
+                    result = a * b;
+                    break;
+                case "/":
+                    result = a / b;
+                    break;
+            }
+            if (result < 1) {
+                throw new LessOneNumException("в римской системе нет отрицательных чисел");
+            } else out = handlerArabianNumberToRomeNumber(Integer.toString(result));
+
+            return out;
+        }
+
     }
-//    public static String arabianCalc(String input){
-//
-//    }
-//    public static String romanianCalc(String input){
-//
-//    }
 
     public static String handlerArabianNumberToRomeNumber(String incoming) {
         String romeNum = "";
@@ -166,12 +261,6 @@ public class Main {
                     }
                 }
                 break;
-//            default:
-//                try {
-//                    throw new IOException();
-//                } catch (IOException e) {
-//                    System.out.println("not roman num");
-//                }
         }
         return Integer.toString(result);
     }
