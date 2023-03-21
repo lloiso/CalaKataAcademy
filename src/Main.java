@@ -8,7 +8,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         input = scanner.nextLine();
 
-
         try {
             System.out.println(calc(input));
         } catch (MoreTenNumber e) {
